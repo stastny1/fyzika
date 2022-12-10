@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/root.css">
+    <link rel="stylesheet" href="css/font_init.css">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Oke</title>
+</head>
+<body>
+    <h1>Canvas Demo </h1>
+    <p> by Jakub Stastny</p>
+
+       <div class="input-fields">
+              <label for="x">x</label>
+
+              <input class="correct" type="text" id="x" name="x" required  size="10">
+       
+       
+              <label for="y">y</label>
+       
+              <input class="correct" type="text" id="y" name="y" required size="10">
+       
+       
+              <label for="vel_x">vel x</label>
+       
+              <input class="correct" type="text" id="vel_x" name="vel_y" required size="10">
+       
+       
+       
+              <label for="vel_y">vel y</label>
+       
+              <input class="correct" type="text" id="vel_y" name="vel_x" required
+                     minlength="4" maxlength="69" size="10">
+       
+       
+       
+              <label for="width">width</label>
+       
+              <input class="correct" type="text" id="width" name="width" required
+                     minlength="4" maxlength="69" size="10">
+       
+       
+              <label for="color">color</label>
+
+
+              <select name="color" id="color">
+                <option value="yellow">yellow</option>
+                <option value="blue">blue</option>
+                <option value="red">red</option>
+                <option value="green">green</option>
+
+
+              </select>
+       
+              <!-- <input type="text" id="color" name="width" required -->
+                     <!-- minlength="4" maxlength="69" size="10"> -->
+
+
+              <label for="vectors"> show vectors</label>
+              <input type="checkbox" name="vectors" id="vectors">   
+       
+              
+              <button class="btn-primary" id="button">Add Object</button>
+       
+       </div>
+       
+
+
+
+    <div class="holder">
+        <canvas height="700" width="1000">
+            Máte starý prehliadač, ktorý nepotrebuje canvas Api,
+            prosím zapnite si modernejší, ďakujem
+        </canvas>
+    </div>
+    
+
+<script src="js/ui_funcs.js"></script>
+<script src="js/main.js"></script>
+<script src="js/ui.js"></script>
+
+</body>
+</html>
