@@ -1,12 +1,4 @@
-interface InputIds {
-    x: string,
-    y: string,
-    vel_x: string,
-    vel_y: string,
-    width: string,
-    color: string
-
-}
+import { InputIds } from "./interfaces";
 
 const inputs: InputIds = {
     x: "#x", 

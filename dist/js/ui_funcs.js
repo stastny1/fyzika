@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function get_data(inputs_object) {
     let data_object = {};
     for (let key in inputs_object) {

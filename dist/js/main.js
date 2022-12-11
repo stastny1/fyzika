@@ -3,7 +3,9 @@ let canvas = document.querySelector("canvas");
 if (!canvas) {
     canvas = document.createElement("canvas");
     const root = document.querySelector("body");
-    root.appendChild(canvas);
+    if (root) {
+        root.appendChild(canvas);
+    }
 }
 const ctx = canvas.getContext("2d");
 const fillStyle = "green";
