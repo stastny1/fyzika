@@ -4,7 +4,7 @@ if (!canvas) {
   canvas = document.createElement("canvas");
   const root: HTMLBodyElement | null = document.querySelector("body");
   if (root) {
-      root.appendChild(canvas);
+    root.appendChild(canvas);
   }
 }
 const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -87,11 +87,22 @@ class PhysicEnviroment {
   }
 
   collisionInNextFrameX(pobj1: Rect, pobj2: Rect) {
-    let next_x1 = pobj1.x + pobj1.vel_x;
-    let next_x2 = pobj2.x + pobj2.vel_x;
-    let delta = Math.abs(next_x1 - next_x2);
+    let next_x1: number = pobj1.x + pobj1.vel_x;
+    let next_x2: number = pobj2.x + pobj2.vel_x;
+    let delta: number = Math.abs(next_x1 - next_x2);
+    let doesOverlapY1: boolean =
+      (pobj1.width + pobj1.y > pobj2.y && pobj2.y >= pobj1.y) ||
+      (pobj2.width + pobj2.y <= pobj1.y + pobj1.width &&
+        pobj2.y + pobj2.width > pobj1.y);
 
-    if (delta <= pobj1.vel_x || delta <= pobj2.vel_x) {
+    let doesOverlapY2: boolean =
+      (pobj2.width + pobj2.y > pobj1.y && pobj1.y >= pobj2.y) ||
+      (pobj1.width + pobj1.y <= pobj2.y + pobj2.width &&
+        pobj1.y + pobj1.width > pobj2.y);
+
+    let doesOverlap = doesOverlapY1 || doesOverlapY2;
+
+    if ((delta <= pobj1.vel_x || delta <= pobj2.vel_x) && doesOverlap) {
       return [true, delta];
     }
 
@@ -155,8 +166,6 @@ class PhysicEnviroment {
         );
         if (collision) {
           console.log("collision");
-          this._pobjects[0].vel_x *= -1;
-          this._pobjects[1].vel_x *= -1;
         }
         if (this.drawVectors) {
           this.drawVector(element);

@@ -21,7 +21,7 @@ button.addEventListener("click", () => {
     console.log(rect);
     if (physics._num_of_objects == 0) {
         physics.addObject(rect);
-        physics.loop();
+        physics.loop(500);
     }
     else {
         physics.addObject(rect);

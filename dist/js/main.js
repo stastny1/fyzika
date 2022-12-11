@@ -53,7 +53,14 @@ class PhysicEnviroment {
         let next_x1 = pobj1.x + pobj1.vel_x;
         let next_x2 = pobj2.x + pobj2.vel_x;
         let delta = Math.abs(next_x1 - next_x2);
-        if (delta <= pobj1.vel_x || delta <= pobj2.vel_x) {
+        let doesOverlapY1 = (pobj1.width + pobj1.y > pobj2.y && pobj2.y >= pobj1.y) ||
+            (pobj2.width + pobj2.y <= pobj1.y + pobj1.width &&
+                pobj2.y + pobj2.width > pobj1.y);
+        let doesOverlapY2 = (pobj2.width + pobj2.y > pobj1.y && pobj1.y >= pobj2.y) ||
+            (pobj1.width + pobj1.y <= pobj2.y + pobj2.width &&
+                pobj1.y + pobj1.width > pobj2.y);
+        let doesOverlap = doesOverlapY1 || doesOverlapY2;
+        if ((delta <= pobj1.vel_x || delta <= pobj2.vel_x) && doesOverlap) {
             return [true, delta];
         }
         return [false, 0];
@@ -101,8 +108,6 @@ class PhysicEnviroment {
                 let [collision, delta] = this.collisionInNextFrameX(this._pobjects[0], this._pobjects[1]);
                 if (collision) {
                     console.log("collision");
-                    this._pobjects[0].vel_x *= -1;
-                    this._pobjects[1].vel_x *= -1;
                 }
                 if (this.drawVectors) {
                     this.drawVector(element);
