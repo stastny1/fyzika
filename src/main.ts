@@ -86,7 +86,22 @@ class PhysicEnviroment {
     this._num_of_objects = 0;
   }
 
-  collisionInNextFrameX(pobj1: Rect, pobj2: Rect) {
+  areCollidingX(pobj1: Rect, pobj2: Rect) {
+    const doesOverlapY1: boolean =
+    (pobj1.width + pobj1.y > pobj2.y && pobj2.y >= pobj1.y) ||
+    (pobj2.width + pobj2.y <= pobj1.y + pobj1.width &&
+      pobj2.y + pobj2.width > pobj1.y);
+
+    const doesOverlapY2: boolean =
+    (pobj2.width + pobj2.y > pobj1.y && pobj1.y >= pobj2.y) ||
+    (pobj1.width + pobj1.y <= pobj2.y + pobj2.width &&
+      pobj1.y + pobj1.width > pobj2.y);
+
+    const doesOverlap = doesOverlapY1 || doesOverlapY2;
+    
+  }
+
+  collisionInNextFrameX(pobj1: Rect, pobj2: Rect): [boolean, number] {
     let next_x1: number = pobj1.x + pobj1.vel_x;
     let next_x2: number = pobj2.x + pobj2.vel_x;
     let delta: number = Math.abs(next_x1 - next_x2);
@@ -108,6 +123,29 @@ class PhysicEnviroment {
 
     return [false, 0];
   }
+
+
+  // collisionInNextFrameY(pobj1: Rect, pobj2: Rect): [boolean, number] {
+  //   let next_y1: number = pobj1.y + pobj1.vel_y;
+  //   let next_y2: number = pobj2.y + pobj2.vel_y;
+  //   let delta: number = Math.abs(next_y1 - next_y2);
+  //   let doesOverlapY1: boolean =
+  //     (pobj1.width + pobj1.y > pobj2.y && pobj2.y >= pobj1.y) ||
+  //     (pobj2.width + pobj2.y <= pobj1.y + pobj1.width &&
+  //       pobj2.y + pobj2.width > pobj1.y);
+
+  //   let doesOverlapY2: boolean =
+  //     (pobj2.width + pobj2.y > pobj1.y && pobj1.y >= pobj2.y) ||
+  //     (pobj1.width + pobj1.y <= pobj2.y + pobj2.width &&
+  //       pobj1.y + pobj1.width > pobj2.y);
+
+  //   let doesOverlap = doesOverlapY1 || doesOverlapY2;
+
+  //   if ((delta <= pobj1.vel_x || delta <= pobj2.vel_x) && doesOverlap) {
+  //     return [true, delta];
+  //   }
+  //   return [false, 0]
+  // }
 
   setVectosWalls(pobj: Rect) {
     if (pobj.x >= this.width - pobj.width || pobj.x <= 0) {
