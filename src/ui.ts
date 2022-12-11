@@ -1,4 +1,5 @@
 import { InputIds } from "./interfaces";
+import { get_data, prepare_rect_data, generate_rect } from "./ui_funcs";
 
 const inputs: InputIds = {
   x: "#x",

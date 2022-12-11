@@ -198,13 +198,13 @@ class PhysicEnviroment {
         this.ctx.fillStyle = element.color;
 
         this.setVectosWalls(element);
-        let [collision, delta] = this.collisionInNextFrameX(
-          this._pobjects[0],
-          this._pobjects[1]
-        );
-        if (collision) {
-          console.log("collision");
-        }
+        // let [collision, delta] = this.collisionInNextFrameX(
+        //   this._pobjects[0],
+        //   this._pobjects[1]
+        // );
+        // if (collision) {
+        //   console.log("collision");
+        // }
         if (this.drawVectors) {
           this.drawVector(element);
         }

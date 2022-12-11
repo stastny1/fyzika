@@ -1,7 +1,14 @@
 import { InputIds, RectData } from "./interfaces";
 
-function get_data(inputs_object: InputIds) {
-    let data_object: InputIds = {};
+export function get_data(inputs_object: InputIds) {
+    let data_object: InputIds = {
+        x: "",
+        y: "",
+        vel_x: "",
+        vel_y: "",
+        width: "",
+        color: ""
+    };
     for (let key in inputs_object) {
         data_object[key] = inputs_object[key].value;
     }
@@ -10,7 +17,7 @@ function get_data(inputs_object: InputIds) {
 }
 
 
-function prepare_rect_data(data) {
+export function prepare_rect_data(data) {
     let new_object = {};
 
     for (let key in data) {
@@ -24,7 +31,7 @@ function prepare_rect_data(data) {
     return new_object;
 }
 
-function generate_rect(data: RectData) {
+export function generate_rect(data: RectData) {
 
     let rect = new Rect(data.x, data.y, data.vel_x, data.vel_y, data.width, data.color, ctx);
     return rect;
