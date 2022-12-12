@@ -32,6 +32,7 @@ class Rect {
   ctx: CanvasRenderingContext2D;
   _temp_vel_y: number;
   _temp_vel_x: number;
+  _colliding: boolean = false;
   constructor(
     x: number,
     y: number,
@@ -54,9 +55,14 @@ class Rect {
   }
 
   update(x: number, y: number) {
+    let color = this.color;
+    if (this._colliding) {
+      color = "green";
+      this._colliding = false;
+    }
     this.x += x;
     this.y += y;
-    this.ctx.fillStyle = this.color;
+    this.ctx.fillStyle = color;
     this.ctx.fillRect(this.x, this.y, this.width, this.width);
   }
 
@@ -88,64 +94,32 @@ class PhysicEnviroment {
 
   areCollidingX(pobj1: Rect, pobj2: Rect) {
     const doesOverlapY1: boolean =
-    (pobj1.width + pobj1.y > pobj2.y && pobj2.y >= pobj1.y) ||
-    (pobj2.width + pobj2.y <= pobj1.y + pobj1.width &&
-      pobj2.y + pobj2.width > pobj1.y);
-
-    const doesOverlapY2: boolean =
-    (pobj2.width + pobj2.y > pobj1.y && pobj1.y >= pobj2.y) ||
-    (pobj1.width + pobj1.y <= pobj2.y + pobj2.width &&
-      pobj1.y + pobj1.width > pobj2.y);
-
-    const doesOverlap = doesOverlapY1 || doesOverlapY2;
-    
-  }
-
-  collisionInNextFrameX(pobj1: Rect, pobj2: Rect): [boolean, number] {
-    let next_x1: number = pobj1.x + pobj1.vel_x;
-    let next_x2: number = pobj2.x + pobj2.vel_x;
-    let delta: number = Math.abs(next_x1 - next_x2);
-    let doesOverlapY1: boolean =
       (pobj1.width + pobj1.y > pobj2.y && pobj2.y >= pobj1.y) ||
       (pobj2.width + pobj2.y <= pobj1.y + pobj1.width &&
         pobj2.y + pobj2.width > pobj1.y);
 
-    let doesOverlapY2: boolean =
+    const doesOverlapY2: boolean =
       (pobj2.width + pobj2.y > pobj1.y && pobj1.y >= pobj2.y) ||
       (pobj1.width + pobj1.y <= pobj2.y + pobj2.width &&
         pobj1.y + pobj1.width > pobj2.y);
 
-    let doesOverlap = doesOverlapY1 || doesOverlapY2;
+    const doesOverlap = doesOverlapY1 || doesOverlapY2;
 
-    if ((delta <= pobj1.vel_x || delta <= pobj2.vel_x) && doesOverlap) {
-      return [true, delta];
-    }
+    const doesCollideX1: boolean =
+      pobj1.x <= pobj2.x && pobj1.x + pobj1.width >= pobj2.x;
 
-    return [false, 0];
+    const doesCollideX2: boolean =
+      pobj1.x <= pobj2.width + pobj2.x &&
+      pobj1.x + pobj1.width >= pobj2.x + pobj2.width;
+
+    const doesColllideX3: boolean =
+      pobj1.x <= pobj2.x && pobj2.x + pobj2.width <= pobj1.x + pobj1.width;
+
+    const doesColllideX4: boolean =
+      pobj2.x <= pobj1.x && pobj1.x + pobj1.width <= pobj2.x + pobj2.width;
+    return (doesCollideX1 || doesCollideX2 || doesColllideX3 || doesColllideX4) && doesOverlap;
   }
 
-
-  // collisionInNextFrameY(pobj1: Rect, pobj2: Rect): [boolean, number] {
-  //   let next_y1: number = pobj1.y + pobj1.vel_y;
-  //   let next_y2: number = pobj2.y + pobj2.vel_y;
-  //   let delta: number = Math.abs(next_y1 - next_y2);
-  //   let doesOverlapY1: boolean =
-  //     (pobj1.width + pobj1.y > pobj2.y && pobj2.y >= pobj1.y) ||
-  //     (pobj2.width + pobj2.y <= pobj1.y + pobj1.width &&
-  //       pobj2.y + pobj2.width > pobj1.y);
-
-  //   let doesOverlapY2: boolean =
-  //     (pobj2.width + pobj2.y > pobj1.y && pobj1.y >= pobj2.y) ||
-  //     (pobj1.width + pobj1.y <= pobj2.y + pobj2.width &&
-  //       pobj1.y + pobj1.width > pobj2.y);
-
-  //   let doesOverlap = doesOverlapY1 || doesOverlapY2;
-
-  //   if ((delta <= pobj1.vel_x || delta <= pobj2.vel_x) && doesOverlap) {
-  //     return [true, delta];
-  //   }
-  //   return [false, 0]
-  // }
 
   setVectosWalls(pobj: Rect) {
     if (pobj.x >= this.width - pobj.width || pobj.x <= 0) {
@@ -198,13 +172,14 @@ class PhysicEnviroment {
         this.ctx.fillStyle = element.color;
 
         this.setVectosWalls(element);
-        // let [collision, delta] = this.collisionInNextFrameX(
-        //   this._pobjects[0],
-        //   this._pobjects[1]
-        // );
-        // if (collision) {
-        //   console.log("collision");
-        // }
+
+        if (this.areCollidingX(this._pobjects[0], this._pobjects[1])) {
+          this._pobjects[0]._colliding = true;
+          this._pobjects[1]._colliding = true;
+
+
+          console.log("colliding");
+        }
         if (this.drawVectors) {
           this.drawVector(element);
         }
