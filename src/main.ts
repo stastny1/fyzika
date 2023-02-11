@@ -63,10 +63,21 @@ class Rect {
     this.x += x;
     this.y += y;
     this.ctx.fillStyle = color;
-    this.ctx.fillRect(this.x, this.y, this.width, this.width);
+    this.draw();
   }
 
   draw() {
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.x, this.y);
+    this.ctx.lineTo(this.x + this.width, this.y);
+    this.ctx.lineTo(this.x + this.width, this.y + this.width);
+    this.ctx.lineTo(this.x, this.y + this.width);
+    this.ctx.lineTo(this.x, this.y);
+    this.ctx.fill()
+
+
+
+
     this.ctx.fillRect(this.x, this.y, this.width, this.width);
   }
 }
@@ -75,6 +86,7 @@ class PhysicEnviroment {
   ctx: CanvasRenderingContext2D;
   width: number;
   height: number;
+  gravityAcceleration: number;
   _pobjects: Array<Rect>;
   drawVectors: boolean;
   _num_of_objects: number;
@@ -82,17 +94,20 @@ class PhysicEnviroment {
     ctx: CanvasRenderingContext2D,
     width: number,
     height: number,
+    gravityAcceleration: number = 10,
     drawVectors: boolean = false
   ) {
     this.ctx = ctx;
     this.width = width;
     this.height = height;
+    this.gravityAcceleration = gravityAcceleration;
     this._pobjects = [];
     this.drawVectors = drawVectors;
     this._num_of_objects = 0;
   }
 
   areCollidingX(pobj1: Rect, pobj2: Rect) {
+    // Check if the squares are actually on the common height (y axis)
     const doesOverlapY1: boolean =
       (pobj1.width + pobj1.y > pobj2.y && pobj2.y >= pobj1.y) ||
       (pobj2.width + pobj2.y <= pobj1.y + pobj1.width &&
@@ -105,6 +120,8 @@ class PhysicEnviroment {
 
     const doesOverlap = doesOverlapY1 || doesOverlapY2;
 
+
+    // Check if the objects collide on the x axis
     const doesCollideX1: boolean =
       pobj1.x <= pobj2.x && pobj1.x + pobj1.width >= pobj2.x;
 
@@ -117,19 +134,24 @@ class PhysicEnviroment {
 
     const doesColllideX4: boolean =
       pobj2.x <= pobj1.x && pobj1.x + pobj1.width <= pobj2.x + pobj2.width;
+
     return (doesCollideX1 || doesCollideX2 || doesColllideX3 || doesColllideX4) && doesOverlap;
+  }
+
+  areCollidingY(pobj1: Rect, pobj2: Rect) {
+    
   }
 
 
   setVectosWalls(pobj: Rect) {
     if (pobj.x >= this.width - pobj.width || pobj.x <= 0) {
-      pobj.vel_x *= -1;
+      pobj.vel_x *= -0.7;
 
       // VEL_X *= -1
     }
 
     if (pobj.y <= 0 || pobj.y + pobj.width >= this.height) {
-      pobj.vel_y *= -1;
+      pobj.vel_y *= -0.7;
       // VEL_Y *= -1
     }
 
@@ -170,16 +192,17 @@ class PhysicEnviroment {
 
       this._pobjects.forEach((element, index) => {
         this.ctx.fillStyle = element.color;
+        element.vel_y += (interval / 1000) * this.gravityAcceleration;
 
         this.setVectosWalls(element);
 
-        if (this.areCollidingX(this._pobjects[0], this._pobjects[1])) {
-          this._pobjects[0]._colliding = true;
-          this._pobjects[1]._colliding = true;
+        // if (this.areCollidingX(this._pobjects[0], this._pobjects[1])) {
+        //   this._pobjects[0]._colliding = true;
+        //   this._pobjects[1]._colliding = true;
 
 
-          console.log("colliding");
-        }
+        //   console.log("colliding");
+        // }
         if (this.drawVectors) {
           this.drawVector(element);
         }

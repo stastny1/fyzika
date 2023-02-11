@@ -1,2 +1,4 @@
-1. Otvor index.html
-2. Hotovo
+Na spustenie development je použitý parcel
+
+npx parcel index.html
+
