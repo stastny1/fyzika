@@ -1,12 +1,11 @@
 Na development je použitý parcel
 
-`
+```
 npx parcel index.html
-
-`
+```
 Celkom zaujímavý efekt (vložiť do konzole)
 
-`
+```
 physics.loop()
 
 setInterval(() => {
@@ -14,5 +13,4 @@ setInterval(() => {
 		physics.addObject(rect1);
     }, 15);
 
-
-`
+```
